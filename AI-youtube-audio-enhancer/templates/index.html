@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>🎶AI Audio Enhancer</title>
+
+<link rel="stylesheet" href="/static/style.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🎵 AI YouTube Audio Enhancer🎵</h1>
+
+        <p>
+            Improve poor-quality YouTube audio using AI🤖.
+        </p>
+
+        <form method="POST">
+
+            <input
+                type="text"
+                name="youtube_url"
+                placeholder="Paste YouTube URL"
+                required
+            >
+
+            <button type="submit">
+                Enhance Your Audio
+            </button>
+
+        </form>
+
+        {% if enhanced_ready %}
+
+        <div class="result">
+
+            <h2>Your Enhanced Audio is Ready</h2>
+
+            <a href="/download">
+                Download Enhanced Audio
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>
+<!-- 
+cd C:\Users\HP\Documents\codeof\html\project1
+python app.py
+http://localhost:5000
+-->
