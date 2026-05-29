@@ -16,7 +16,7 @@
         <h1>🎵 AI YouTube Audio Enhancer🎵</h1>
 
         <p>
-            Improve poor-quality YouTube audio using AI🤖.
+            Improve poor-quality YouTube audio using AI🤖.❤️
         </p>
 
         <form method="POST">
@@ -27,22 +27,29 @@
                 placeholder="Paste YouTube URL"
                 required
             >
-
+{% if error_message %}
+<div style="background: #ff4444; color: white; padding: 15px; border-radius: 5px; margin-bottom: 20px; text-align: center; border-radius: 8px;">
+    {{ error_message }}
+</div>
+{% endif %}
             <button type="submit">
                 Enhance Your Audio
             </button>
 
         </form>
+        <div id="loadingDiv" style="display: none; text-align: center; margin: 20px 0;">
+            <div class="spinner"></div>
+            <p style="color: #667eea; font-weight: bold; margin-top: 10px;">Processing... Please wait</p>
+        </div>
+        
 
         {% if enhanced_ready %}
 
         <div class="result">
 
             <h2>Your Enhanced Audio is Ready</h2>
-
-            <a href="/download">
-                Download Enhanced Audio
-            </a>
+            <a href="/download/{{ unique_id }}" class="download-btn">Download Enhanced Video</a>
+             
 
         </div>
 
@@ -54,7 +61,7 @@
 
 </html>
 <!-- 
-cd C:\Users\HP\Documents\codeof\html\project1
+ cd C:\Users\HP\Documents\projects\AI-youtube-audio-enhancer
 python app.py
 http://localhost:5000
 -->
