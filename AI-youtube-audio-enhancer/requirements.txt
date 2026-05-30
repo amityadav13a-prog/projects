@@ -3,3 +3,5 @@ yt-dlp
 torch
 torchaudio
 librosa soundfile
+NumPy
+SoundFile
