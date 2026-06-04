@@ -22,7 +22,6 @@ def home():
     if request.method == "POST":
         youtube_url = request.form["youtube_url"].strip()
         
-        # Generate unique ID
         unique_id = str(int(time.time()))
         
         if not youtube_url:
@@ -34,7 +33,7 @@ def home():
             return render_template("index.html", enhanced_ready=False, error_message=error_message)
         
         try:
-            # Step 1: Download video
+            #  Download video
             ydl_opts = {
                 'format': 'best[ext=mp4]/best',
                 'outtmpl': f'downloads/{unique_id}',
@@ -46,7 +45,7 @@ def home():
                 info = ydl.extract_info(youtube_url, download=True)
                 video_file = ydl.prepare_filename(info)
             
-            # Step 2: Extract audio
+            # Extract audio
             audio_file = f'audio/input_{unique_id}.wav'
             extract_cmd = [
                 "ffmpeg",
@@ -65,18 +64,35 @@ def home():
                 error_message = "❌ Error extracting audio. FFmpeg error."
                 return render_template("index.html", enhanced_ready=False, error_message=error_message)
             
-            # Step 3: AI Enhancement
+            #  AI Enhancement
             y, sr = librosa.load(audio_file, sr=44100)
+
+            # Normalize input
+            y = y / np.max(np.abs(y))
+
+            # STFT
             S = librosa.stft(y)
             S_mag = np.abs(S)
             S_phase = np.angle(S)
-            
+
+            # Stronger noise reduction
             noise = np.mean(S_mag[:, :int(0.5*sr/512)], axis=1, keepdims=True)
-            S_mag_reduced = np.maximum(S_mag - 2*noise, 0)
-            
+            S_mag_reduced = np.maximum(S_mag - 4*noise, 0)
+
+            # Soft thresholding for better quality
+            threshold = np.percentile(S_mag_reduced, 5)
+            S_mag_reduced[S_mag_reduced < threshold] = 0
+
             S_enhanced = S_mag_reduced * np.exp(1j * S_phase)
             y_enhanced = librosa.istft(S_enhanced)
-            
+
+            # Normalize और volume boost करो
+            y_enhanced = y_enhanced / np.max(np.abs(y_enhanced))
+            y_enhanced = y_enhanced * 1.2
+
+            # Clip to prevent distortion
+            y_enhanced = np.clip(y_enhanced, -1, 1)
+
             enhanced_audio = f'audio/enhanced_{unique_id}.wav'
             sf.write(enhanced_audio, y_enhanced, sr)
             
