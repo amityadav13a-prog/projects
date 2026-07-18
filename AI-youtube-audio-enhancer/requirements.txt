@@ -1,7 +1,6 @@
 flask
 yt-dlp
-torch
-torchaudio
-librosa soundfile
+librosa 
+soundfile
 NumPy
-SoundFile
+gunicorn

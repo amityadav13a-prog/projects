@@ -48,7 +48,7 @@ def home():
             # Extract audio
             audio_file = f'audio/input_{unique_id}.wav'
             extract_cmd = [
-                "ffmpeg",
+                "ffmpeg.exe",
                 "-i", video_file,
                 "-vn",
                 "-acodec", "pcm_s16le",
@@ -99,7 +99,7 @@ def home():
             # Step 4: Merge video with enhanced audio
             output_file = f'output/enhanced_{unique_id}.mp4'
             merge_cmd = [
-                "ffmpeg",
+                "ffmpeg.exe",
                 "-i", video_file,
                 "-i", enhanced_audio,
                 "-c:v", "copy",
@@ -139,4 +139,7 @@ def download(unique_id):
         return redirect(url_for('home'))
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 5000))
+    )
