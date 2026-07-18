@@ -39,6 +39,12 @@ def home():
                 'outtmpl': f'downloads/{unique_id}',
                 'quiet': False,
                 'no_warnings': False,
+                'noplaylist': True,
+                'extractor_args': {
+                    'youtube': {
+                        'player_client': ['android_vr']
+                    }
+                }
             }
             
             with YoutubeDL(ydl_opts) as ydl:
