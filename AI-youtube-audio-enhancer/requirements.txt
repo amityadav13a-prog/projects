@@ -1,6 +1,6 @@
-flask
+Flask
 yt-dlp
-librosa 
+librosa
 soundfile
-NumPy
+numpy
 gunicorn

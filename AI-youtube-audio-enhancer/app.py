@@ -40,11 +40,6 @@ def home():
                 'quiet': False,
                 'no_warnings': False,
                 'noplaylist': True,
-                'extractor_args': {
-                    'youtube': {
-                        'player_client': ['android_vr']
-                    }
-                }
             }
             
             with YoutubeDL(ydl_opts) as ydl:
@@ -54,7 +49,7 @@ def home():
             # Extract audio
             audio_file = f'audio/input_{unique_id}.wav'
             extract_cmd = [
-                "ffmpeg.exe",
+                "ffmpeg",
                 "-i", video_file,
                 "-vn",
                 "-acodec", "pcm_s16le",
@@ -105,7 +100,7 @@ def home():
             # Step 4: Merge video with enhanced audio
             output_file = f'output/enhanced_{unique_id}.mp4'
             merge_cmd = [
-                "ffmpeg.exe",
+                "ffmpeg",
                 "-i", video_file,
                 "-i", enhanced_audio,
                 "-c:v", "copy",
